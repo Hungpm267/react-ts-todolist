@@ -3,35 +3,11 @@ import "./App.css";
 import { Route, Routes, Link } from "react-router-dom";
 import CompletedTasks from "./pages/CompletedTasks";
 import AllTasks from "./pages/AllTasks";
-import { useState } from "react";
-import type { todo } from "./interfaces/Todo";
+import "./index.css";
+import { useTodoLogic } from "./hooks/useToDoLogic";
 
 function App() {
-  const [tasks, setTasks] = useState<todo[]>([]);
-  const [newTaskText, setNewTaskText] = useState<string>("");
-  function handleAddTask(e: React.FormEvent): void {
-    e.preventDefault();
-    const newTask = {
-      id: Date.now(),
-      text: newTaskText,
-      completed: false,
-    };
-    setTasks([...tasks, newTask]);
-    setNewTaskText("");
-  }
-  function handleDeleteTask(id: number): void {
-    const newListTasks = tasks.filter((nvu) => nvu.id != id);
-    setTasks(newListTasks);
-  }
-  function handleDoneTask(id: number): void {
-    const updatedTasks = tasks.map((nvu): todo => {
-      if (nvu.id === id) {
-        return { ...nvu, completed: true };
-      }
-      return nvu;
-    });
-    setTasks(updatedTasks);
-  }
+  const { tasks, newTaskText, setNewTaskText, handleAddTask, handleDeleteTask, handleDoneTask } = useTodoLogic();
   return (
     <>
       <nav>
